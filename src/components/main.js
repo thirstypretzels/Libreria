@@ -5,6 +5,7 @@ import Browse from './browse';
 import Profile from './profile';
 import Wish from './wishlist';
 import Cart from './shoppingcart';
+import Comments from './comments';
 
 
 const Main = () => (
@@ -14,6 +15,7 @@ const Main = () => (
         <Route path="/Profile" component={Profile} />
         <Route path="/Wish" component={Wish} />
         <Route path="/Cart" component={Cart} />
+        <Route path="/Comments" component={Comments} />
     </Switch>
 )
 
