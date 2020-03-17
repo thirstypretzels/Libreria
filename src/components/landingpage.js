@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Grid, Cell } from 'react-mdl';
+
+
 class Landing extends Component {
     render() {
         return(
@@ -15,6 +17,7 @@ class Landing extends Component {
                         <div className="banner-text">
                             <h1>Welcome to Geek Text!</h1>
                         </div>
+
                     </Cell>
 
                 </Grid>
