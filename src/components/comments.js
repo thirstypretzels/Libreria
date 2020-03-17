@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Comment, CommentGroup, Button, Form, Header} from 'semantic-ui-react';
+import StarRating from './StarRating';
 
 class Comments extends Component {
 
@@ -14,14 +15,14 @@ class Comments extends Component {
                
                <h2><span>Book Details GO HERE</span></h2>
                <h1>
-                    StarRating
+                    <StarRating></StarRating>
             </h1>
             <Header as='h3' dividing>
                 Comments
             </Header>
             
             <CommentGroup>
-            <Comment>
+            <Comment>~
                 <Comment.Avatar src = "https://www.asiatripdeals.com/wp-content/uploads/2019/03/Anonymous-Avatar.png" />
                 <Comment.Content>
                     <Comment.Author>
