@@ -35,3 +35,32 @@ background: linear-gradient(to top, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ 
   font-weight: bold;
   color: white;
 }
+
+.image {
+  position: relative;
+  width: 100%;
+}
+
+h2 {
+  position: absolute;
+  top:  150px;
+  left: 500px;
+  width: 100%;
+}
+
+h2 span {
+ 
+  font: bold 100px/200px Helvetica, Sans-Serif;
+  letter-spacing: -1px;
+ 
+ 
+}
+
+input[type="radio"]  {
+  display: none;
+}
+
+.star {
+  cursor: pointer;
+  transition: color 200ms;
+}
