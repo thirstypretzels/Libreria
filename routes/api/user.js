@@ -1,48 +1,53 @@
 const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator/check");
-let Books = require('./models/Book');
+let Users = require('./models/User');
 
 router.route('/').get((req, res) => {
-  Books.find()
-    .then(books => res.json(books))
+  Users.find()
+    .then(users => res.json(users))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route('/add').post((req, res) => {
-  const title = req.body.title;
-  const author = req.body.author;
-  const price = req.body.price;
-  const rating = req.body.rating;
-  const newBook = new Books({title,author, price,rating});
+  const loginID = req.body.loginID;
+  const password = req.body.password;
+  const email = req.body.email;
+  const name = req.body.name;
+  const nickName = req.body.nickName;
+  const address = req.body.address;
+  const creditCards = req.body.creditCards;
+  const newUsers= new Users({loginID,password,email,name,nickName,address,creditCards});
 
-  newBook.save()
-      .then(() => res.json('Book added!'))
+  newUser.save()
+      .then(() => res.json('User added!'))
       .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route('/:id').get((req, res) => {
-  Books.findById(req.params.id)
-    .then(books => res.json(books))
+  Users.findById(req.params.id)
+    .then(users => res.json(users))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route('/:id').delete((req, res) => {
-  Books.findByIdAndDelete(req.params.id)
-    .then(books => res.json('Deleted.'))
+  Users.findByIdAndDelete(req.params.id)
+    .then(users => res.json('Deleted.'))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route('/add').post((req, res) => {
-  Books.findById(req.params.id)
-    .then(books => {
-      books.title = req.body.title;
-      books.author = req.body.author;
-      books.price = req.body.price;
-      books.rating = req.body.rating;
-
-      newBook.save()
-          .then(() => res.json('Book Updated!'))
+  Users.findById(req.params.id)
+    .then(users => {
+        users.loginID = req.body.loginID;
+        users.password = req.body.password;
+        users.email = req.body.email;
+        users.name = req.body.name;
+        users.nickName = req.body.nickName;
+        users.address = req.body.address;
+        users.creditCards = req.body.creditCards;
+      newUser.save()
+          .then(users => res.json('Book Updated!'))
           .catch(err => res.status(400).json('Error: ' + err));
     })
     .catch(err => res.status(400).json('Error: ' + err));
