@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Comment, CommentGroup, Button, Form, Header } from "semantic-ui-react";
 import cover from "../images/hemingwayCover.jpg";
 import "../styles/detailsComments.css";
-import StarRating from './StarRating';
+import StarRating from "./StarRating";
 
 class Comments extends Component {
   render() {
@@ -43,7 +43,9 @@ class Comments extends Component {
         </div>
         {/* <div className='separator'></div> */}
         <div className='details'>
-          <h1><StarRating></StarRating></h1>
+          <h1>
+            <StarRating></StarRating>
+          </h1>
           <Header as='h3' dividing>
             Comments
           </Header>
