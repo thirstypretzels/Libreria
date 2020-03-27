@@ -1,39 +1,3 @@
-<<<<<<< HEAD
-{
-  "name": "cen4010-group17",
-  "version": "1.0.0",
-  "description": "A simple e-commerce app for books.",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server",
-    "server": "nodemon server"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/KevinLosada/CEN4010-Group17.git"
-  },
-  "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/KevinLosada/CEN4010-Group17/issues"
-  },
-  "homepage": "https://github.com/KevinLosada/CEN4010-Group17#readme",
-  "dependencies": {
-    "bcrypt": "^3.0.8",
-    "config": "^3.2.5",
-    "express": "^4.17.1",
-    "express-validator": "^6.4.0",
-    "gravatar": "^1.8.0",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.8.11",
-    "request": "^2.88.2"
-  },
-  "devDependencies": {
-    "concurrently": "^5.1.0",
-    "nodemon": "^2.0.2"
-  }
-}
-=======
 {
   "name": "react-seminar",
   "version": "0.1.0",
@@ -48,7 +12,7 @@
     "react-icons": "^3.9.0",
     "react-mdl": "^2.1.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.3.1",
+    "react-scripts": "^3.4.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.88.2",
     "typescript": "^3.8.3"
@@ -75,4 +39,3 @@
     ]
   }
 }
->>>>>>> master
