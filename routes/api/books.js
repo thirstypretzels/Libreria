@@ -51,7 +51,7 @@ router.route('/add').post((req, res) => {
 // @route POST api/users
 // @desc register user
 // @access Public
-router.post(
+/*router.post(
   "/",
   [
     check("title", "Title is required")
@@ -69,6 +69,6 @@ router.post(
 
     res.send("User route");
   }
-);
+);*/
 
 module.exports = router;
