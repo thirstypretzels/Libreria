@@ -5,6 +5,18 @@ import "../styles/detailsComments.css";
 import StarRating from "./StarRating";
 
 class Comments extends Component {
+  constructor() {
+    super();
+    this.state = {chars_left: 130, max_chars: 130};
+  }
+
+  handleWordCount = event => {
+    const charCount = event.target.value.length;
+    const maxChar = this.state.max_chars;
+    const charLength = maxChar - charCount;
+    this.setState({chars_left: charLength});
+  }
+
   render() {
     return (
       <div className='parent'>
@@ -73,7 +85,16 @@ class Comments extends Component {
               </Comment>
 
               <Form reply>
-                <Form.TextArea />
+                <Form.TextArea 
+                rows = {6}
+                type = "text"
+                maxLength = {this.state.max_chars}
+                required
+                onChange={this.handleWordCount}
+                />
+                <div>
+                  {this.state.chars_left} characters remaining
+                </div>
                 <Button
                   content='Add Comment'
                   labelPostion='left'
