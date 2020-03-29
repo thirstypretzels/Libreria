@@ -1,3 +1,3 @@
 {
-    "mongoURI": "mongodb+srv://dbUser:<VPA2pA4hH9dcADf1>@maincluster-7xirg.mongodb.net/test?retryWrites=true&w=majority"
+  "mongoURI": "mongodb+srv://dbUser:gnQ5Btlx7DM51q36@books-7xirg.mongodb.net/test?retryWrites=true&w=majority"
 }

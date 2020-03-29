@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 
+const Schema = mongoose.Schema;
+
 const BookSchema = new mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId,
   title: {
     type: String,
     required: true
@@ -17,8 +20,10 @@ const BookSchema = new mongoose.Schema({
     type: Number, //rate out of 5 stars
     required: true
   }
-  // releaseDate: {
-  //   type: Date,
-  //   required: true
-  // }
 });
+
+module.exports = Books = mongoose.model("books", BookSchema);
+
+module.exports.getBooks = (callback, limit) => {
+  Books.find(callback).limit(limit);
+};
