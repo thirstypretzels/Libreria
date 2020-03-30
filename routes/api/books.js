@@ -2,32 +2,33 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const { check, validationResult } = require("express-validator/check");
-const Books = require("../../models/Book");
+const Books = require("../../models/Books");
 
 router.route("/").get((req, res) => {
   Books.find()
     .then(books => res.json(books))
     .catch(err => res.status(400).json("Error: " + err));
 });
-// router.route("/").get((req, res) => {
-//   Books.getBooks((err, books) => {
-//     if (err) {
-//       throw err;
-//     }
-//     res.json(books);
-//   });
-// });
 
-router.route("/add").post((req, res) => {
+router.route("/").post((req, res) => {
   const title = req.body.title;
   const author = req.body.author;
+  const publisher = req.body.publisher;
+  const description = req.body.description;
   const price = req.body.price;
   const rating = req.body.rating;
-  const newBook = new Books({ title, author, price, rating });
+  const newBook = new Books({
+    title,
+    author,
+    publisher,
+    description,
+    price,
+    rating
+  });
 
   newBook
     .save()
-    .then(() => res.json("Book added!"))
+    .then(data => res.json(data))
     .catch(err => res.status(400).json("Error: " + err));
 });
 

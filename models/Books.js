@@ -3,12 +3,19 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const BookSchema = new mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
   title: {
     type: String,
     required: true
   },
   author: {
+    type: String,
+    required: true
+  },
+  publisher: {
+    type: String,
+    required: true
+  },
+  description: {
     type: String,
     required: true
   },
@@ -22,8 +29,4 @@ const BookSchema = new mongoose.Schema({
   }
 });
 
-module.exports = Books = mongoose.model("books", BookSchema);
-
-module.exports.getBooks = (callback, limit) => {
-  Books.find(callback).limit(limit);
-};
+module.exports = Books = mongoose.model("Books", BookSchema);
