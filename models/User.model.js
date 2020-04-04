@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+const Schema = mongoose.Schema;
+
 const UserSchema = new mongoose.Schema({
   loginID: {
     type: String,
@@ -31,5 +33,6 @@ const UserSchema = new mongoose.Schema({
     required: true //probably will not be required at first registration, but required for purchases.
   }
 });
+const Users  = mongoose.model("Users", UserSchema);
 
-module.exports = User = mongoose.model("user", UserSchema);
+module.exports = Users;

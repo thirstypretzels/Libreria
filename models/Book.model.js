@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+const Schema = mongoose.Schema;
+
 const BookSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -16,9 +18,12 @@ const BookSchema = new mongoose.Schema({
   rating: {
     type: Number, //rate out of 5 stars
     required: true
+  },
+  image: {
+    type: String
   }
-  // releaseDate: {
-  //   type: Date,
-  //   required: true
-  // }
 });
+
+const Book  = mongoose.model("Book", BookSchema);
+
+module.exports = Book;
