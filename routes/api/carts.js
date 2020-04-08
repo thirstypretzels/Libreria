@@ -36,12 +36,13 @@ router.route('/update/:id/:bookId').post((req, res) => {
   Carts.findById(req.params.id)
     .then(carts => {
       carts.books.push(req.params.bookId);
-      newPrice = Books.findById(req.params.bookId).price
-      carts.price = carts.price + 3;
+      Books.findById(req.params.bookId)
+      .then(book => {newBook = book.price;
+      carts.price = carts.price + newBook;
       carts.save()
           .then(() => res.json('Cart Updated!'))
           .catch(err => res.status(400).json('Error: ' + err));
-    })
+      })})
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
