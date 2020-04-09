@@ -1,6 +1,23 @@
 const router = require('express').Router();
+const jq = require('node-jq');
 let Carts = require('../../models/Cart.model');
 let Books = require('../../models/Book.model');
+
+function searchArray(array, id){
+  for(let i=0;i<array.length;i++){
+    if(array[i][0] == id){
+      return true;
+    }
+  }
+  return false;
+}
+function findPosition(array, id){
+  for(let i=0;i<array.length;i++){
+    if(array[i][0] == id){
+      return i;
+    }
+  }
+}
 
 router.route('/').get((req, res) => {
   Carts.find()
@@ -10,10 +27,9 @@ router.route('/').get((req, res) => {
 
 router.route('/add').post((req, res) => {
   const user = req.body.user;
-  const books = req.body.books;
-  const price = req.body.price;
-  const quantity = req.body.quantity; 
-  const newCart = new Carts({user, books, price, quantity});
+  const product = req.body.product;
+  const subtotal = req.body.subtotal;
+  const newCart = new Carts({user, product, subtotal});
 
   newCart.save()
       .then(() => res.json('Cart added!'))
@@ -35,14 +51,29 @@ router.route('/:id').delete((req, res) => {
 router.route('/update/:id/:bookId').post((req, res) => {
   Carts.findById(req.params.id)
     .then(carts => {
-      carts.books.push(req.params.bookId);
-      Books.findById(req.params.bookId)
-      .then(book => {newBook = book.price;
-      carts.price = carts.price + newBook;
-      carts.save()
-          .then(() => res.json('Cart Updated!'))
-          .catch(err => res.status(400).json('Error: ' + err));
-      })})
+      if(searchArray(carts.product, req.params.bookId)){
+        let pos = findPosition(carts.product, req.params.bookId);
+            Books.findById(req.params.bookId)
+            .then(book => {newBook = book.price;
+            carts.subtotal = carts.subtotal + newBook;
+            let fin = carts.product[pos][1] +1;
+            jq '(.some_array[] | select(.k1 == "B") | .k2) |= "new_value"';
+            carts.save()
+                .then(() => res.json('Cart Updated!' + pos))
+                .catch(err => res.status(400).json('Error: ' + err));
+        })
+      }
+      else if (!searchArray(carts.product, req.params.bookId)){
+            carts.product.push([req.params.bookId, 1]);
+            Books.findById(req.params.bookId)
+            .then(book => {newBook = book.price;
+            carts.subtotal = carts.subtotal + newBook;
+            carts.save()
+                .then(() => res.json('Cart Updated!'))
+                .catch(err => res.status(400).json('Error: ' + err));
+        })}
+        else{let none = null;}
+      })
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
@@ -50,9 +81,8 @@ router.route('/update/:id').post((req, res) => {
   Carts.findById(req.params.id)
     .then(carts => {
       carts.user = req.body.user;
-      carts.books = req.body.books;
-      carts.price = Number(req.body.price);
-      carts.quantity = Number(req.body.quantity);
+      carts.product = req.body.product;
+      carts.subtotal = Number(req.body.subtotal);
       carts.save()
           .then(() => res.json('Cart Updated!'))
           .catch(err => res.status(400).json('Error: ' + err));

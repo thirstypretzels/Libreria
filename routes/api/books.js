@@ -19,6 +19,7 @@ router.route('/add').post((req, res) => {
     author,
     price,
     rating,
+    image
   });
 
   newBook.save()
