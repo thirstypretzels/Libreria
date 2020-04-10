@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const jq = require('node-jq');
 let Carts = require('../../models/Cart.model');
 let Books = require('../../models/Book.model');
 
@@ -48,7 +47,7 @@ router.route('/:id').delete((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/update/:id/:bookId').post((req, res) => {
+router.route('/update/:id/:bookId').put((req, res) => {
   Carts.findById(req.params.id)
     .then(carts => {
       if(searchArray(carts.product, req.params.bookId)){
@@ -56,8 +55,8 @@ router.route('/update/:id/:bookId').post((req, res) => {
             Books.findById(req.params.bookId)
             .then(book => {newBook = book.price;
             carts.subtotal = carts.subtotal + newBook;
-            let fin = carts.product[pos][1] +1;
-            jq '(.some_array[] | select(.k1 == "B") | .k2) |= "new_value"';
+            let fin = carts.product[pos][1] + 1;
+            carts.product[pos][1] = fin;
             carts.save()
                 .then(() => res.json('Cart Updated!' + pos))
                 .catch(err => res.status(400).json('Error: ' + err));
