@@ -10,6 +10,7 @@ const bookRoutes = require("./routes/api/books");
 // const cartRoutes = require("./routes/api/carts");
 const userRoutes = require("./routes/api/user");
 // const orderRoutes = require("./routes/api/orders");
+const commentRoutes = require("./routes/api/comment");
 
 app.get("/", (req, res) => res.send("API Running"));
 
@@ -18,6 +19,7 @@ app.use(express.json());
 
 app.use("/book", bookRoutes);
 app.use("/user", userRoutes);
+app.use("/comment", commentRoutes);
 // app.use("/cart", cartRoutes);
 // app.use("/order", orderRoutes);
 app.use((req, res, next) => {

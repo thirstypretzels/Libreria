@@ -1,28 +1,36 @@
-import React, { Component } from "react";
-import { Comment, CommentGroup, Button, Form, Header } from "semantic-ui-react";
+import React,  { useState, useEffect } from "react";
 import cover from "../images/hemingwayCover.jpg";
 import "../styles/detailsComments.css";
-import StarRating from "./StarRating";
+import Comments from "./CommentSection/Comments";
+import StarRating from "./CommentSection/StarRating";
 import axios from "axios";
 
-class Comments extends Component {
-  constructor() {
-    super();
-    this.state = { chars_left: 130, max_chars: 130 };
+function DetailsComments(props) {
+
+ const bookId = props.match.params.bookId
+ const [Books, setBook] = useState([])
+ 
+ const [CommentLists, setCommentLists] = useState([])
+
+  const bookVariable = {
+    bookId: bookId
   }
 
-  // componentDidMount() {
-  //   axios.get('/')
-  // }
+  useEffect(() => {
+    axios.post('/api/comment/getComments', bookVariable)
+      .then(response => {
+        if (response.data.success) {
+          console.log(response.data.Books)
+          setCommentLists(response.data.comments)
+          
+        }
+      })
+  })
 
-  handleWordCount = event => {
-    const charCount = event.target.value.length;
-    const maxChar = this.state.max_chars;
-    const charLength = maxChar - charCount;
-    this.setState({ chars_left: charLength });
-  };
-
-  render() {
+  const updateComment = (newComment) => {
+    setCommentLists(CommentLists.push(newComment))
+   }
+   
     return (
       <div className='parent'>
         {/* Image */}
@@ -63,54 +71,14 @@ class Comments extends Component {
           <h1>
             <StarRating></StarRating>
           </h1>
-          <Header as='h3' dividing>
-            Comments
-          </Header>
+          
+      <Comments CommentLists={CommentLists} 
+      postId={Books._id} refreshFunction={updateComment} />
 
-          <div className='container'>
-            <CommentGroup className='info'>
-              <Comment>
-                <Comment.Avatar src='https://www.asiatripdeals.com/wp-content/uploads/2019/03/Anonymous-Avatar.png' />
-                <Comment.Content>
-                  <Comment.Author>Anonymous</Comment.Author>
-                  <Comment.Metadata>an hour ago</Comment.Metadata>
-                  <Comment.Text>This book is amazing!</Comment.Text>
-                  <Comment.Action>Reply</Comment.Action>
-                </Comment.Content>
-              </Comment>
-
-              <Comment>
-                <Comment.Avatar src='https://www.asiatripdeals.com/wp-content/uploads/2019/03/Anonymous-Avatar.png' />
-                <Comment.Content>
-                  <Comment.Author>Anonymous</Comment.Author>
-                  <Comment.Metadata>2 days ago</Comment.Metadata>
-                  <Comment.Text>This book is spectacular!</Comment.Text>
-                  <Comment.Action>Reply</Comment.Action>
-                </Comment.Content>
-              </Comment>
-
-              <Form reply>
-                <Form.TextArea
-                  rows={6}
-                  type='text'
-                  maxLength={this.state.max_chars}
-                  required
-                  onChange={this.handleWordCount}
-                />
-                <div>{this.state.chars_left} characters remaining</div>
-                <Button
-                  content='Add Comment'
-                  labelPostion='left'
-                  icon='edit'
-                  primary
-                />
-              </Form>
-            </CommentGroup>
-          </div>
-        </div>
+       </div>
       </div>
     );
   }
-}
 
-export default Comments;
+  export default DetailsComments
+

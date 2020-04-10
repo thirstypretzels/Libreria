@@ -24,7 +24,7 @@ function App() {
                 <Link to="/Profile">Profile</Link>
                 <Link to="/Wish">Wish List</Link>
                 <Link to="/Cart">Shopping Cart</Link>
-                <Link to="/Comments">Comments PlaceHolder</Link>
+                <Link to="/DetailsComments">Comments PlaceHolder</Link>
             </Navigation>
         </Drawer>
         <Content>
