@@ -53,8 +53,8 @@ router.route("/update/:id/:bookId").post((req, res) => {
     .then((wishList) => {
       if (searchArray(wishList.product, req.params.bookId)) {
         let pos = findPosition(wishList.product, req.params.bookId);
-        Books.findById(req.params.bookId).then((book) => {
-          newBook = book.price;
+        Carts.findById(req.params.cartId).then((carts) => {
+          newBook = carts.price;
           let fin = wishList.product[pos][1] + 1;
           wishList.product[pos][1] = fin;
           wishList
