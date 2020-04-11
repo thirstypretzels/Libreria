@@ -75,11 +75,31 @@ router.route('/update/:id/:bookId').post((req, res) => {
       })
     .catch(err => res.status(400).json('Error: ' + err));
 });
+
 router.route('/updateDelete/:id/:bookId').post((req, res) => {
   Carts.findById(req.params.id)
     .then(carts => {
       if(searchArray(carts.product, req.params.bookId)){
         let pos = findPosition(carts.product, req.params.bookId);
+        carts.product.splice(pos,1);
+            Books.findById(req.params.bookId)
+            .then(book => {newBook = book.price;
+            carts.subtotal = carts.subtotal - newBook;
+            carts.save()
+                .then(() => res.json('Cart Updated!' + pos))
+                .catch(err => res.status(400).json('Error: ' + err));
+        })
+      }})
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/updateSaveForLater/:id/:bookId').post((req, res) => {
+  Carts.findById(req.params.id)
+    .then(carts => {
+      if(searchArray(carts.product, req.params.bookId)){
+        let pos = findPosition(carts.product, req.params.bookId);
+        let hold = carts.product[pos][0];
+        carts.save4L8r.push(hold);
         carts.product.splice(pos,1);
             Books.findById(req.params.bookId)
             .then(book => {newBook = book.price;
