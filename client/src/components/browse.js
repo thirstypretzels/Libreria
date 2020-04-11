@@ -23,9 +23,6 @@ const Book = props => (
 export default class BooksList extends Component {
   constructor(props) {
     super(props);
-export default class BooksList extends Component {
-  constructor(props) {
-    super(props);
 
     this.addToCart = this.addToCart.bind(this);
 
@@ -60,16 +57,6 @@ export default class BooksList extends Component {
     return this.state.books.map(currentbook => {
       return <Book book={currentbook} addToCart={this.addToCart} deleteBook={this.deleteBook} key={currentbook._id}/>;
     })
-  }
-      return (
-        <Book
-          book={currentbook}
-          addToCart={this.addToCart}
-          deleteBook={this.deleteBook}
-          key={currentbook._id}
-        />
-      );
-    });
   }
 
   render() {

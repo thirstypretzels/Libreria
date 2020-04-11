@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const { check, validationResult } = require("express-validator/check");
-const Books = require("../../models/Books");
+const Books = require("../../models/Book.model");
 
 router.route("/").get((req, res) => {
   Books.find()
