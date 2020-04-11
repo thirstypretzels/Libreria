@@ -1,15 +1,20 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-const Book = (props) => (
+const WishLists = (props) => (
   <tr>
+    <td>{props.title}</td>
+    <td>{props.author}</td>
+    <td>${props.price}</td>
     <td>
-      <img src={props.book.image} width="100" height="175" />
+      <button
+        onClick={() =>
+          props.addToCart(props.book._id, "5e8e1ada937b9612e0966c35")
+        }
+      >
+        Add to Cart
+      </button>
     </td>
-    <td>{props.book.title}</td>
-    <td>{props.book.author}</td>
-    <td>${props.book.price}</td>
-    <td>{props.book.rating} Stars</td>
     <td>
       <button onClick={() => props.deleteBook(props.book._id)}>
         Remove from Cart
@@ -24,11 +29,12 @@ function axiosGet(Id) {
   });
 }
 
-export default class CartList extends Component {
+export default class Wish_List extends Component {
   constructor(props) {
     super(props);
+    this.addToCart = this.addToCart.bind(this);
     this.deleteBook = this.deleteBook.bind(this);
-    this.state = { cart: Object, subtotal: Number, books: [] };
+    this.state = { wishItems: Object, books: [] };
   }
 
   componentDidMount() {
@@ -40,17 +46,16 @@ export default class CartList extends Component {
           array.push(response.data[0].product[i]);
         }
 
-        let booksInTheCart = [];
+        let booksInTheList = [];
         let quantityArray = [];
         for (let i = 0; i < array.length; i++) {
           quantityArray.push(array[i][1]);
           axiosGet(array[i][0]).then((data) => {
-            booksInTheCart.push(Object(data));
-            if (booksInTheCart.length == array.length) {
+            booksInTheList.push(Object(data));
+            if (booksInTheList.length == array.length) {
               this.setState({
-                cart: response.data[0],
-                subtotal: response.data[0].subtotal,
-                books: booksInTheCart,
+                wishItems: response.data[0],
+                books: booksInTheList,
               });
             }
           });
@@ -61,11 +66,17 @@ export default class CartList extends Component {
       });
   }
 
+  addToCart(id, cartId) {
+    axios
+      .post("http://localhost:5000/carts/update/" + cartId + "/" + id)
+      .then((res) => console.log(res.data));
+  }
+
   deleteBook(id) {
     axios
       .post(
         "http://localhost:5000/carts/updateDelete/" +
-          this.state.cart._id +
+          this.state.wishItems._id +
           "/" +
           id
       )
@@ -73,7 +84,6 @@ export default class CartList extends Component {
         console.log(response.data);
       });
     this.setState({
-      subtotal: this.state.cart.subtotal,
       books: this.state.books.filter((el) => el._id !== id),
     });
   }
@@ -81,33 +91,46 @@ export default class CartList extends Component {
   bookList() {
     console.log(this.state.subtotal);
     return this.state.books.map((currentbook) => {
-      return (
-        <Book
-          book={currentbook}
-          deleteBook={this.deleteBook}
-          key={currentbook._id}
-        />
-      );
+      return <WishLists book={currentbook} key={currentbook._id} />;
     });
   }
-
   render() {
     return (
-      <div>
-        <h3>Shopping Cart</h3>
-        <table className="table">
-          <thead className="thead-light">
-            <tr>
-              <th>Image</th>
-              <th>Title</th>
-              <th>Author</th>
-              <th>Price</th>
-              <th>Rating</th>
-            </tr>
-          </thead>
-          <tbody>{this.bookList()}</tbody>
-        </table>
-        <h3>Subtotal: ${this.state.subtotal}.00</h3>
+      <div className="App">
+        <h1>Wish List</h1>
+
+        <p>
+          <form>
+            <input placeholder="Create New List. (Max is 3)" />
+            <button>Create New List</button>
+          </form>
+        </p>
+        <div>
+          <select>
+            <option>Main List</option>
+            <option>Personal List</option>
+          </select>
+          <button>Submit</button>
+        </div>
+
+        <p>
+          <input placeholder="Change List Name" />
+          <button>Rename</button>
+          <button>Delete</button>
+        </p>
+        <div>
+          <h3>Wish Lists</h3>
+          <table className="table">
+            <thead className="thead-light">
+              <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>{this.bookList()}</tbody>
+          </table>
+        </div>
       </div>
     );
   }
