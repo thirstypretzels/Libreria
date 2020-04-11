@@ -48,13 +48,13 @@ router.route("/:id").delete((req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.route("/update/:id/:bookId").post((req, res) => {
+router.route("/update/:id/:cartId").post((req, res) => {
   WishList.findById(req.params.id)
     .then((wishList) => {
       if (searchArray(wishList.product, req.params.bookId)) {
         let pos = findPosition(wishList.product, req.params.bookId);
-        Books.findById(req.params.bookId).then((book) => {
-          newBook = book.price;
+        Carts.findById(req.params.cartId).then((carts) => {
+          newBook = carts.price;
           let fin = wishList.product[pos][1] + 1;
           wishList.product[pos][1] = fin;
           wishList
@@ -64,8 +64,8 @@ router.route("/update/:id/:bookId").post((req, res) => {
         });
       } else if (!searchArray(wishList.product, req.params.bookId)) {
         wishList.product.push([req.params.bookId, 1]);
-        Books.findById(req.params.bookId).then((book) => {
-          newBook = book.price;
+        Carts.findById(req.params.cartID).then((carts) => {
+          newBook = carts.price;
           wishList
             .save()
             .then(() => res.json("Wish List Updated!"))
