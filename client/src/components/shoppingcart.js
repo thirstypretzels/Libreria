@@ -58,15 +58,13 @@ componentDidMount() {
   deleteBook(id) {
     axios.post('http://localhost:5000/carts/updateDelete/'+ this.state.cart._id + '/' +id)
       .then(response => { console.log(response.data)});
-    this.setState({
-      books: this.state.books.filter(el => el._id !== id)
-    })
+    this.setState({subtotal: this.state.cart.subtotal,books: this.state.books.filter(el => el._id !== id)})
   }
 
   bookList() {
     console.log(this.state.subtotal);
     return this.state.books.map(currentbook => {
-      return <Book book={currentbook} key={currentbook._id}/>;
+      return <Book book={currentbook} deleteBook={this.deleteBook} key={currentbook._id}/>;
     })
   }
 
@@ -93,16 +91,3 @@ componentDidMount() {
     )
   }
 }
-
-/*
-import React, { Component } from 'react';
-
-class Profile extends Component {
-    render() {
-        return(
-            <div><h1> Profile </h1></div>
-        )
-    }
-}
-
-export default Profile;*/
