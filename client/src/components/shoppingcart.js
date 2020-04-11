@@ -1,44 +1,58 @@
-/*import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from 'react';
 import axios from 'axios';
 
 const Cart = props => (
   <tr>
     <td> 
       <img
-      src = {props.cart.books}
+      src = {props.image}
       width="100" height="175"
       />
     </td>
-    <td>{props.book.title}</td>
-    <td>{props.book.author}</td>
-    <td>${props.book.price}</td>
-    <td>{props.book.rating} Stars</td>
-    <td>
-    <button onClick={() => props.addToCart(props.book._id,"5e8b7dbaa7361446701d9098")}>Add to Cart</button>
-    </td>
+    <td>{props.title}</td>
+    <td>{props.author}</td>
+    <td>${props.price}</td>
+    <td>{props.rating} Stars</td>
   </tr>
 )
-//addToCart(props.book._id,5e8b7dbaa7361446701d9098)
+
+const axis = require('axios');
+async function populateBookIds(cartArray){
+  let booksInTheCart = [];
+  console.log("harry");
+  for(let i=0;i < cartArray.length;i++){
+    let res = await axis.get('http://localhost:5000/books/' + cartArray[i][0]);
+    booksInTheCart.push(res.data);
+  }
+  console.log(booksInTheCart[1].title);
+  return booksInTheCart;
+}
+
 export default class CartList extends Component {
   constructor(props) {
     super(props);
-    this.state = {carts: []};
+    this.state = {carts:[], books:[]};
   }
 
   componentDidMount() {
     axios.get('http://localhost:5000/carts/')
       .then(response => {
-        this.setState({ carts: response.data })
+        this.setState({carts: response.data[0]});
+        console.log(this.state.carts.product[0][0]);
       })
       .catch((error) => {
         console.log(error);
       })
-  }
-
-  addToCart(id, cartId){
-      axios.post('http://localhost:5000/carts/update/' + cartId + '/' + id)
-      .then(res => console.log(res.data));
+      
+      populateBookIds(/*this.state.carts.product*/["5e88c25c01b1601270944749","5e88c25c01b1601270944749"])
+      .then(response => {
+        //console.log(bookDocuments[0]);
+        this.setState({books: response})
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      //console.log(this.state.books[0]);
   }
 
   deleteBook(id) {
@@ -51,52 +65,51 @@ export default class CartList extends Component {
   }
 
   bookList() {
-    return this.state.carts.map(currentbook => {
+   /* populateBookIds(this.state.carts.product)
+      .then(response => {
+        this.setState({books: response})
+      })
+      .catch((error) => {
+        console.log(error);})*/
+    console.log(this.state.carts.user);  
+    console.log(this.state.carts.subtotal);
+    return this.state.books.map(currentbook => {
       return <Cart cart={currentbook} addToCart={this.addToCart} deleteBook={this.deleteBook} key={currentbook._id}/>;
     })
   }
 
-  setem()
-  {
-    for(var i=0;i<cart.books.length;i++)
-    {
-        var tr="<tr>";
-        var img = "<td> <img src = {"+cart.books[i].image + "} width='100' height='175' /> </td>";
-        var td1="<td>"+cart.books[i]["title"]+"</td>";
-        var td2="<td>"+cart.books[i]["author"]+"</td>";
-        var td3="<td>"+cart.books[i]["price"]+"</td>";
-        var td4="<td>"+cart.books[i]["rating"]+"</td></tr>";
-        
-      var final = (tr+img+td1+td2+td3+td4);  
-    }
-  }
-
   render() {
     return (
-      <div id="div1"> 
-          {this.bookList()}
-          { this.setem() }
+      <div>
+        <h3>Shopping Cart</h3>
+        <table className="table">
+          <thead className="thead-light">
+            <tr>
+              <th>Image</th>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Price</th>
+              <th>Rating</th>
+            </tr>
+          </thead>
+          <tbody>
+            { this.bookList() }
+          </tbody>
+        </table>
       </div>
     )
   }
 }
-*/
 
-import React, { Component } from "react";
-import { Comment, CommentGroup, Button, Form, Header } from "semantic-ui-react";
-import cover from "../images/hemingwayCover.jpg";
+/*
+import React, { Component } from 'react';
 
-class Comments extends Component {
-  render() {
-    return (
-      <div class='image'>
-        <div className='details'>
-          <h1 className='title'>Enerst Hemingay</h1>
-          <h1>StarRating</h1>
-        </div>
-      </div>
-    );
-  }
+class Profile extends Component {
+    render() {
+        return(
+            <div><h1> Profile </h1></div>
+        )
+    }
 }
 
-export default Comments;
+export default Profile;*/
