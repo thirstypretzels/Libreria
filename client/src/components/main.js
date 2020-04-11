@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LandingPage from "./landingpage";
 import Browse from "./browse";
 import Profile from "./profile";
@@ -14,7 +14,7 @@ const Main = () => (
     <Route path='/Profile' component={Profile} />
     <Route path='/Wish' component={Wish} />
     <Route path='/Cart' component={Cart} />
-    <Route path='/Comments' component={detailsComments} />
+    <Route path='/Comments/:id' component={detailsComments} />
   </Switch>
 );
 

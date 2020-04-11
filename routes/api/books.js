@@ -6,8 +6,8 @@ const Books = require("../../models/Book.model");
 
 router.route("/").get((req, res) => {
   Books.find()
-    .then(books => res.json(books))
-    .catch(err => res.status(400).json("Error: " + err));
+    .then((books) => res.json(books))
+    .catch((err) => res.status(400).json("Error: " + err));
 });
 
 router.route("/").post((req, res) => {
@@ -23,30 +23,30 @@ router.route("/").post((req, res) => {
     publisher,
     description,
     price,
-    rating
+    rating,
   });
 
   newBook
     .save()
-    .then(data => res.json(data))
-    .catch(err => res.status(400).json("Error: " + err));
+    .then((data) => res.json(data))
+    .catch((err) => res.status(400).json("Error: " + err));
 });
 
 router.route("/:id").get((req, res) => {
   Books.findById(req.params.id)
-    .then(books => res.json(books))
-    .catch(err => res.status(400).json("Error: " + err));
+    .then((books) => res.json(books))
+    .catch((err) => res.status(400).json("Error: " + err));
 });
 
 router.route("/:id").delete((req, res) => {
   Books.findByIdAndDelete(req.params.id)
-    .then(books => res.json("Deleted."))
-    .catch(err => res.status(400).json("Error: " + err));
+    .then((books) => res.json("Deleted."))
+    .catch((err) => res.status(400).json("Error: " + err));
 });
 
 router.route("/add").post((req, res) => {
   Books.findById(req.params.id)
-    .then(books => {
+    .then((books) => {
       books.title = req.body.title;
       books.author = req.body.author;
       books.price = req.body.price;
@@ -55,9 +55,9 @@ router.route("/add").post((req, res) => {
       newBook
         .save()
         .then(() => res.json("Book Updated!"))
-        .catch(err => res.status(400).json("Error: " + err));
+        .catch((err) => res.status(400).json("Error: " + err));
     })
-    .catch(err => res.status(400).json("Error: " + err));
+    .catch((err) => res.status(400).json("Error: " + err));
 });
 
 // @route POST api/users
