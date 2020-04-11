@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -20,6 +20,9 @@ const Book = props => (
   </tr>
 )
 //addToCart(props.book._id,5e8e1ada937b9612e0966c35)
+export default class BooksList extends Component {
+  constructor(props) {
+    super(props);
 export default class BooksList extends Component {
   constructor(props) {
     super(props);
@@ -57,6 +60,16 @@ export default class BooksList extends Component {
     return this.state.books.map(currentbook => {
       return <Book book={currentbook} addToCart={this.addToCart} deleteBook={this.deleteBook} key={currentbook._id}/>;
     })
+  }
+      return (
+        <Book
+          book={currentbook}
+          addToCart={this.addToCart}
+          deleteBook={this.deleteBook}
+          key={currentbook._id}
+        />
+      );
+    });
   }
 
   render() {

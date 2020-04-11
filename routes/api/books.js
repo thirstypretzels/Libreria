@@ -1,58 +1,85 @@
-const router = require('express').Router();
-let Book = require('../../models/Book.model');
+const express = require("express");
+const router = express.Router();
+const mongoose = require("mongoose");
+const { check, validationResult } = require("express-validator/check");
+const Books = require("../../models/Books");
 
-router.route('/').get((req, res) => {
-  Book.find()
+router.route("/").get((req, res) => {
+  Books.find()
     .then(books => res.json(books))
-    .catch(err => res.status(400).json('Error: ' + err));
+    .catch(err => res.status(400).json("Error: " + err));
 });
 
-router.route('/add').post((req, res) => {
+router.route("/").post((req, res) => {
   const title = req.body.title;
   const author = req.body.author;
-  const price = Number(req.body.price);
-  const rating = Number(req.body.rating);
-  const image = req.body.image;
-
-  const newBook = new Book({
+  const publisher = req.body.publisher;
+  const description = req.body.description;
+  const price = req.body.price;
+  const rating = req.body.rating;
+  const newBook = new Books({
     title,
     author,
+    publisher,
+    description,
     price,
-    rating,
-    image
+    rating
   });
 
-  newBook.save()
-  .then(() => res.json('Book added!'))
-  .catch(err => res.status(400).json('Error: ' + err));
+  newBook
+    .save()
+    .then(data => res.json(data))
+    .catch(err => res.status(400).json("Error: " + err));
 });
 
-router.route('/:id').get((req, res) => {
-  Book.findById(req.params.id)
-    .then(book => res.json(book))
-    .catch(err => res.status(400).json('Error: ' + err));
+router.route("/:id").get((req, res) => {
+  Books.findById(req.params.id)
+    .then(books => res.json(books))
+    .catch(err => res.status(400).json("Error: " + err));
 });
 
-router.route('/:id').delete((req, res) => {
-  Book.findByIdAndDelete(req.params.id)
-    .then(() => res.json('Book deleted.'))
-    .catch(err => res.status(400).json('Error: ' + err));
+router.route("/:id").delete((req, res) => {
+  Books.findByIdAndDelete(req.params.id)
+    .then(books => res.json("Deleted."))
+    .catch(err => res.status(400).json("Error: " + err));
 });
 
-router.route('/update/:id').post((req, res) => {
-  Book.findById(req.params.id)
-    .then(book => {
-      book.title = req.body.title;
-      book.author = req.body.author;
-      book.price = Number(req.body.price);
-      book.rating = Number(req.body.rating);
-      book.image = req.body.image;
+router.route("/add").post((req, res) => {
+  Books.findById(req.params.id)
+    .then(books => {
+      books.title = req.body.title;
+      books.author = req.body.author;
+      books.price = req.body.price;
+      books.rating = req.body.rating;
 
-      book.save()
-        .then(() => res.json('Book updated!'))
-        .catch(err => res.status(400).json('Error: ' + err));
+      newBook
+        .save()
+        .then(() => res.json("Book Updated!"))
+        .catch(err => res.status(400).json("Error: " + err));
     })
-    .catch(err => res.status(400).json('Error: ' + err));
+    .catch(err => res.status(400).json("Error: " + err));
 });
+
+// @route POST api/users
+// @desc register user
+// @access Public
+/*router.post(
+  "/",
+  [
+    check("title", "Title is required")
+      .not()
+      .isEmpty(),
+    check("author", "An author is required."),
+    check("price", "Please enter a valid price"),
+    check("rating", "Test for first rating")
+  ],
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    res.send("User route");
+  }
+);*/
 
 module.exports = router;
