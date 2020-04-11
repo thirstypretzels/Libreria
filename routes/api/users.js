@@ -1,6 +1,5 @@
-const express = require("express");
-const router = express.Router();
-const { check, validationResult } = require("express-validator/check");
+const router = require('express').Router();
+let Users = require("../../models/User.model");
 let Users = require("../../models/User");
 
 router.route("/").get((req, res) => {
@@ -27,8 +26,7 @@ router.route("/add").post((req, res) => {
     creditCards
   });
 
-  newUser
-    .save()
+  newUsers.save()
     .then(() => res.json("User added!"))
     .catch(err => res.status(400).json("Error: " + err));
 });
@@ -45,7 +43,7 @@ router.route("/:id").delete((req, res) => {
     .catch(err => res.status(400).json("Error: " + err));
 });
 
-router.route("/add").post((req, res) => {
+router.route("/updated/:id").post((req, res) => {
   Users.findById(req.params.id)
     .then(users => {
       users.loginID = req.body.loginID;
@@ -55,35 +53,12 @@ router.route("/add").post((req, res) => {
       users.nickName = req.body.nickName;
       users.address = req.body.address;
       users.creditCards = req.body.creditCards;
-      newUser
-        .save()
-        .then(users => res.json("Book Updated!"))
+
+      users.save()
+        .then(users => res.json("User Updated!"))
         .catch(err => res.status(400).json("Error: " + err));
     })
     .catch(err => res.status(400).json("Error: " + err));
 });
-
-// @route POST api/users
-// @desc register user
-// @access Public
-router.post(
-  "/",
-  [
-    check("title", "Title is required")
-      .not()
-      .isEmpty(),
-    check("author", "An author is required."),
-    check("price", "Please enter a valid price"),
-    check("rating", "Test for first rating")
-  ],
-  (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    res.send("User route");
-  }
-);
 
 module.exports = router;
