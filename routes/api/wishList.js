@@ -64,8 +64,8 @@ router.route("/update/:id/:bookId").post((req, res) => {
         });
       } else if (!searchArray(wishList.product, req.params.bookId)) {
         wishList.product.push([req.params.bookId, 1]);
-        Books.findById(req.params.bookId).then((book) => {
-          newBook = book.price;
+        Carts.findById(req.params.cartID).then((carts) => {
+          newBook = carts.price;
           wishList
             .save()
             .then(() => res.json("Wish List Updated!"))
