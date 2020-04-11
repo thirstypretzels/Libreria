@@ -7,6 +7,7 @@ import axios from "axios";
 function DetailsComments(props) {
   const bookId = props.match.params.id;
   const [Book, setBook] = useState([]);
+
   const [Info, setInfo] = useState({
     title: "Title",
     author: "Author",
@@ -35,7 +36,9 @@ function DetailsComments(props) {
       setInfo(data.data);
     });
   }, []);
+
   console.log(Info);
+
   const updateComment = (newComment) => {
     setCommentLists(CommentLists.push(newComment));
   };
@@ -43,7 +46,7 @@ function DetailsComments(props) {
   return (
     <div className='parent'>
       {/* Image */}
-      {/* <img className='left-image' src={props.book.image} alt='bookcover' /> */}
+      <img className='left-image' src={Info.image} alt='bookcover' />
       {/* First Details Page*/}
       <div className='details'>
         <h1 className='title'>{Info.title}</h1>
