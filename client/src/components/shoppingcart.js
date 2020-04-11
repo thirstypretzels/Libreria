@@ -1,80 +1,72 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-const Cart = props => (
+const Book = props => (
   <tr>
     <td> 
       <img
-      src = {props.image}
+      src = {props.book.image}
       width="100" height="175"
       />
     </td>
-    <td>{props.title}</td>
-    <td>{props.author}</td>
-    <td>${props.price}</td>
-    <td>{props.rating} Stars</td>
+    <td>{props.book.title}</td>
+    <td>{props.book.author}</td>
+    <td>${props.book.price}</td>
+    <td>{props.book.rating} Stars</td>
+    <td>
+    <button onClick={() => props.deleteBook(props.book._id)}>Remove from Cart</button>
+    </td>
   </tr>
 )
 
-const axis = require('axios');
-async function populateBookIds(cartArray){
-  let booksInTheCart = [];
-  console.log("harry");
-  for(let i=0;i < cartArray.length;i++){
-    let res = await axis.get('http://localhost:5000/books/' + cartArray[i][0]);
-    booksInTheCart.push(res.data);
-  }
-  console.log(booksInTheCart[1].title);
-  return booksInTheCart;
+function axiosGet(Id){
+  return axios.get('http://localhost:5000/books/' + Id)
+  .then(response =>{ return response.data})
 }
 
 export default class CartList extends Component {
   constructor(props) {
     super(props);
-    this.state = {carts:[], books:[]};
+    this.deleteBook = this.deleteBook.bind(this);
+    this.state = {cart:Object,subtotal: Number,books:[]};
   }
 
-  componentDidMount() {
+componentDidMount() {
     axios.get('http://localhost:5000/carts/')
       .then(response => {
-        this.setState({carts: response.data[0]});
-        console.log(this.state.carts.product[0][0]);
-      })
+        let array= [];
+        for(let i=0;i<response.data[0].product.length;i++){
+          array.push(response.data[0].product[i]);
+        }
+
+        let booksInTheCart = [];
+        let quantityArray = [];
+        for(let i=0;i < array.length;i++){
+          quantityArray.push(array[i][1]);
+          axiosGet(array[i][0]).then(data =>{
+            booksInTheCart.push(Object(data));
+            if(booksInTheCart.length == array.length){
+          this.setState({cart: response.data[0],subtotal: response.data[0].subtotal, books: booksInTheCart});}
+        }) 
+      }
+    })
       .catch((error) => {
         console.log(error);
       })
-      
-      populateBookIds(this.state.carts.product)
-      .then(response => {
-        //console.log(bookDocuments[0]);
-        this.setState({books: response})
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      //console.log(this.state.books[0]);
   }
 
   deleteBook(id) {
-    axios.delete('http://localhost:5000/books/'+id)
+    axios.post('http://localhost:5000/carts/updateDelete/'+ this.state.cart._id + '/' +id)
       .then(response => { console.log(response.data)});
-
     this.setState({
-      carts: this.state.books.filter(el => el._id !== id)
+      books: this.state.books.filter(el => el._id !== id)
     })
   }
 
   bookList() {
-   /* populateBookIds(this.state.carts.product)
-      .then(response => {
-        this.setState({books: response})
-      })
-      .catch((error) => {
-        console.log(error);})*/
-    console.log(this.state.carts.user);  
-    console.log(this.state.carts.subtotal);
+    console.log(this.state.subtotal);
     return this.state.books.map(currentbook => {
-      return <Cart cart={currentbook} addToCart={this.addToCart} deleteBook={this.deleteBook} key={currentbook._id}/>;
+      return <Book book={currentbook} key={currentbook._id}/>;
     })
   }
 
@@ -93,9 +85,10 @@ export default class CartList extends Component {
             </tr>
           </thead>
           <tbody>
-            { this.bookList() }
+            {this.bookList()}
           </tbody>
         </table>
+    <h3>Subtotal: ${this.state.subtotal}.00</h3>
       </div>
     )
   }
