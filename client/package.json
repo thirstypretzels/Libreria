@@ -14,8 +14,10 @@
     "react-mdl": "^2.1.0",
     "react-native": "^0.62.0",
     "react-native-cli": "^2.0.1",
+    "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.0",
+    "redux": "^4.0.5",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.88.2",
     "typescript": "^3.8.3"

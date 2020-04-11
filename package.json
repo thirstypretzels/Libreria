@@ -29,6 +29,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.8.11",
     "react-native": "^0.62.0",
+    "redux": "^4.0.5",
     "request": "^2.88.2"
   },
   "devDependencies": {
