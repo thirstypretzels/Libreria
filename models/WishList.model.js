@@ -7,11 +7,14 @@ const WishListSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  BookItem: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Book",
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  product: {
+    type: "array",
+    maxItems: 2,
+    items: [{ type: mongoose.Schema.Types.ObjectId }, { type: Number }],
+    required: true,
   },
 });
 
-const WishList = mongoose.model("ListOfWish", WishListSchema);
+const WishList = mongoose.model("Wish Lists", WishListSchema);
 module.exports = WishList;
