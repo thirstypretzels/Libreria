@@ -6,10 +6,12 @@ function SingleComment(props) {
         <div>
             <Comment>
                 <Comment.Avatar 
-                src= {props.comment.writer.image}
+                src= {props.Comment.writer.image}
                 alt= "image" />
                 <Comment.Content>
-                  <Comment.Author>  {props.comment.writer.name}  </Comment.Author>
+                  <Comment.Author>
+                   {props.comment.writer.nickName}  
+                   </Comment.Author>
                   <Comment.Text>  {props.comment.content}  </Comment.Text>
                  </Comment.Content>
               </Comment>
