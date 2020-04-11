@@ -44,7 +44,7 @@ export default class CartList extends Component {
         console.log(error);
       })
       
-      populateBookIds(/*this.state.carts.product*/["5e88c25c01b1601270944749","5e88c25c01b1601270944749"])
+      populateBookIds(this.state.carts.product)
       .then(response => {
         //console.log(bookDocuments[0]);
         this.setState({books: response})
