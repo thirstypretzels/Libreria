@@ -48,7 +48,7 @@ router.route("/:id").delete((req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.route("/update/:id/:bookId").post((req, res) => {
+router.route("/update/:id/:cartId").post((req, res) => {
   WishList.findById(req.params.id)
     .then((wishList) => {
       if (searchArray(wishList.product, req.params.bookId)) {
