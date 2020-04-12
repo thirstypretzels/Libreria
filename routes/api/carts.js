@@ -10,6 +10,14 @@ function searchArray(array, id){
   }
   return false;
 }
+function searchSavedArray(array, id){
+  for(let i=0;i<array.length;i++){
+    if(array[i] == id){
+      return true;
+    }
+  }
+  return false;
+}
 function findPosition(array, id){
   for(let i=0;i<array.length;i++){
     if(array[i][0] == id){
@@ -17,6 +25,14 @@ function findPosition(array, id){
     }
   }
 }
+function findSavedPosition(array, id){
+  for(let i=0;i<array.length;i++){
+    if(array[i] == id){
+      return i;
+    }
+  }
+}
+
 
 router.route('/').get((req, res) => {
   Carts.find()
@@ -72,7 +88,6 @@ router.route('/update/:id/:bookId').post((req, res) => {
                 .then(() => res.json('Cart Updated!'))
                 .catch(err => res.status(400).json('Error: ' + err));
         })}
-        else{let none = null;}
       })
     .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -93,11 +108,12 @@ router.route('/updateDelete/:id/:bookId').post((req, res) => {
       }})
     .catch(err => res.status(400).json('Error: ' + err));
 });
+
 router.route('/updateDeleteSaveForLater/:id/:bookId').post((req, res) => {
   Carts.findById(req.params.id)
     .then(carts => {
-      if(searchArray(carts.save4L8r, req.params.bookId)){
-        let pos = findPosition(carts.save4L8r, req.params.bookId);
+      if(searchSavedArray(carts.save4L8r, req.params.bookId)){
+        let pos = findSavedPosition(carts.save4L8r, req.params.bookId);
         carts.save4L8r.splice(pos,1);
       }})
     .catch(err => res.status(400).json('Error: ' + err));
