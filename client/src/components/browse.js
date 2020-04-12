@@ -8,7 +8,7 @@ const Book = (props) => {
   return (
     <tr>
       <td>
-        <img src={props.book.image} width='100' height='175' />
+        <img src={props.book.image} width="100" height="175" />
       </td>
       <td>{props.book.title}</td>
       <td>{props.book.author}</td>
@@ -21,6 +21,13 @@ const Book = (props) => {
           }
         >
           Add to Cart
+        </button>
+        <button
+          onClick={() =>
+            props.addToWishList(props.book._id, "5e9255aeb8b7c05d48b070af")
+          }
+        >
+          Add to Wish List
         </button>
         <button
           onClick={() => props.history.push(`/Comments/${props.book._id}`)}
@@ -38,7 +45,7 @@ export default class BooksList extends Component {
     super(props);
 
     this.addToCart = this.addToCart.bind(this);
-
+    this.addToWishList = this.addToWishList.bind(this);
     this.state = { books: [] };
   }
 
@@ -59,6 +66,11 @@ export default class BooksList extends Component {
       .post("http://localhost:5000/carts/update/" + cartId + "/" + id)
       .then((res) => console.log(res.data));
   }
+  addToWishList(id, wishId) {
+    axios
+      .post("http://localhost:5000/wishList/update/" + wishId + "/" + id)
+      .then((res) => console.log(res.data));
+  }
 
   deleteBook(id) {
     axios.delete("http://localhost:5000/books/" + id).then((response) => {
@@ -77,6 +89,7 @@ export default class BooksList extends Component {
           history={this.props.history}
           book={currentbook}
           addToCart={this.addToCart}
+          addToWishList={this.addToWishList}
           deleteBook={this.deleteBook}
           key={currentbook._id}
         />
@@ -88,8 +101,8 @@ export default class BooksList extends Component {
     return (
       <div>
         <h3>Logged Books</h3>
-        <table className='table'>
-          <thead className='thead-light'>
+        <table className="table">
+          <thead className="thead-light">
             <tr>
               <th>Image</th>
               <th>Title</th>
