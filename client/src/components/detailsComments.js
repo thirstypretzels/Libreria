@@ -26,12 +26,12 @@ function DetailsComments(props) {
   console.log(bookId);
 
   useEffect(() => {
-    // axios.post("/api/comment/getComments", bookVariable).then((response) => {
-    //   if (response.data.success) {
-    //     setBook(response.data.Book);
-    //     setCommentLists(response.data.comments);
-    //   }
-    // });
+     axios.post("/api/comment/getComments", bookVariable).then((response) => {
+       if (response.data.success) {
+         setBook(response.data.Book);
+         setCommentLists(response.data.comments);
+       }
+     });
     axios.get(`http://localhost:5000/books/${bookId}`).then((data) => {
       setInfo(data.data);
     });
@@ -63,8 +63,8 @@ function DetailsComments(props) {
           <h3 className='info'>{Info.genre}</h3>
         </div>
       </div>
-      {/* <div className='separator'></div> */}
-      {/* <div className='details'>
+       <div className='separator'></div> 
+       <div className='details'>
         <h1>
           <StarRating></StarRating>
         </h1>
@@ -74,7 +74,7 @@ function DetailsComments(props) {
           postId={Book._id}
           refreshFunction={updateComment}
         />
-      </div> */}
+      </div>
     </div>
   );
 }
