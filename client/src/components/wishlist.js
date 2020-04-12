@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-const WishLists = (props) => (
+const Book = (props) => (
   <tr>
-    <td>{props.title}</td>
-    <td>{props.author}</td>
-    <td>${props.price}</td>
+    <td>{props.book.title}</td>
+    <td>{props.book.author}</td>
+    <td>${props.book.price}</td>
     <td>
       <button
         onClick={() =>
@@ -17,7 +17,7 @@ const WishLists = (props) => (
     </td>
     <td>
       <button onClick={() => props.deleteBook(props.book._id)}>
-        Remove from Cart
+        Remove from List
       </button>
     </td>
   </tr>
@@ -39,7 +39,7 @@ export default class Wish_List extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:5000/carts/")
+      .get("http://localhost:5000/wishList/")
       .then((response) => {
         let array = [];
         for (let i = 0; i < response.data[0].product.length; i++) {
@@ -70,12 +70,16 @@ export default class Wish_List extends Component {
     axios
       .post("http://localhost:5000/carts/update/" + cartId + "/" + id)
       .then((res) => console.log(res.data));
+    this.deleteBook(id);
+    this.setState({
+      books: this.state.books.filter((el) => el._id !== id),
+    });
   }
 
   deleteBook(id) {
     axios
       .post(
-        "http://localhost:5000/carts/updateDelete/" +
+        "http://localhost:5000/wishList/updateDelete/" +
           this.state.wishItems._id +
           "/" +
           id
@@ -91,7 +95,14 @@ export default class Wish_List extends Component {
   bookList() {
     console.log(this.state.subtotal);
     return this.state.books.map((currentbook) => {
-      return <WishLists book={currentbook} key={currentbook._id} />;
+      return (
+        <Book
+          book={currentbook}
+          addToCart={this.addToCart}
+          deleteBook={this.deleteBook}
+          key={currentbook._id}
+        />
+      );
     });
   }
   render() {
