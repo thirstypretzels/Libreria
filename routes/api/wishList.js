@@ -1,6 +1,6 @@
 const router = require("express").Router();
 let WishList = require("../../models/WishList.model");
-let Carts = require("../../modelsCart.model");
+let Carts = require("../../models/Cart.model");
 let Books = require("../../models/Book.model");
 
 function searchArray(array, id) {
@@ -19,16 +19,17 @@ function findPosition(array, id) {
   }
 }
 
-outer.route("/").get((req, res) => {
+router.route("/").get((req, res) => {
   WishList.find()
     .then((wishList) => res.json(wishList))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
 router.route("/add").post((req, res) => {
+  const WishListNum = req.body.WishListNum;
   const user = req.body.user;
   const product = req.body.product;
-  const newWishList = new WishList({ user, product });
+  const newWishList = new WishList({ WishListNum, user, product });
 
   newWishList
     .save()
@@ -48,13 +49,13 @@ router.route("/:id").delete((req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.route("/update/:id/:cartId").post((req, res) => {
+router.route("/update/:id/:bookId").post((req, res) => {
   WishList.findById(req.params.id)
     .then((wishList) => {
       if (searchArray(wishList.product, req.params.bookId)) {
         let pos = findPosition(wishList.product, req.params.bookId);
-        Carts.findById(req.params.cartId).then((carts) => {
-          newBook = carts.price;
+        Books.findById(req.params.bookId).then((book) => {
+          newBook = book.price;
           let fin = wishList.product[pos][1] + 1;
           wishList.product[pos][1] = fin;
           wishList
@@ -64,8 +65,8 @@ router.route("/update/:id/:cartId").post((req, res) => {
         });
       } else if (!searchArray(wishList.product, req.params.bookId)) {
         wishList.product.push([req.params.bookId, 1]);
-        Carts.findById(req.params.cartID).then((carts) => {
-          newBook = carts.price;
+        Books.findById(req.params.bookId).then((book) => {
+          newBook = book.price;
           wishList
             .save()
             .then(() => res.json("Wish List Updated!"))
@@ -98,10 +99,11 @@ router.route("/updateDelete/:id/:bookId").post((req, res) => {
 router.route("/update/:id").post((req, res) => {
   WishList.findById(req.params.id)
     .then((wishList) => {
-      WishList.title = req.body.title;
-      WishList.author = req.body.author;
-      WishList.price = Number(req.body.price);
-      WishList.save()
+      wishList.user = req.body.user;
+      wishList.product = req.body.product;
+      wishList.price = Number(req.body.price);
+      wishList
+        .save()
         .then(() => res.json("Wish List Updated!"))
         .catch((err) => res.status(400).json("Error: " + err));
     })
