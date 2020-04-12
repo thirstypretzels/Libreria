@@ -28,7 +28,8 @@ router.route('/add').post((req, res) => {
   const user = req.body.user;
   const product = req.body.product;
   const subtotal = req.body.subtotal;
-  const newCart = new Carts({user, product, subtotal});
+  const save4L8r = req.body.save4L8r;
+  const newCart = new Carts({user, product, subtotal, save4L8r});
 
   newCart.save()
       .then(() => res.json('Cart added!'))
@@ -92,6 +93,15 @@ router.route('/updateDelete/:id/:bookId').post((req, res) => {
       }})
     .catch(err => res.status(400).json('Error: ' + err));
 });
+router.route('/updateDeleteSaveForLater/:id/:bookId').post((req, res) => {
+  Carts.findById(req.params.id)
+    .then(carts => {
+      if(searchArray(carts.save4L8r, req.params.bookId)){
+        let pos = findPosition(carts.save4L8r, req.params.bookId);
+        carts.save4L8r.splice(pos,1);
+      }})
+    .catch(err => res.status(400).json('Error: ' + err));
+});
 
 router.route('/updateSaveForLater/:id/:bookId').post((req, res) => {
   Carts.findById(req.params.id)
@@ -118,6 +128,7 @@ router.route('/update/:id').post((req, res) => {
       carts.user = req.body.user;
       carts.product = req.body.product;
       carts.subtotal = Number(req.body.subtotal);
+      carts.save4L8r = req.body.save4L8r;
       carts.save()
           .then(() => res.json('Cart Updated!'))
           .catch(err => res.status(400).json('Error: ' + err));
