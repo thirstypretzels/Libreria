@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../styles/detailsComments.css";
 import Comments from "./CommentSection/Comments";
 import StarRating from "./CommentSection/StarRating";
+import { Comment, Header } from 'semantic-ui-react';
 import axios from "axios";
 
 function DetailsComments(props) {
@@ -26,7 +27,7 @@ function DetailsComments(props) {
   console.log(bookId);
 
   useEffect(() => {
-     axios.post("/api/comment/getComments", bookVariable).then((response) => {
+     axios.post(`http://localhost:5000/comment/getComments`, bookVariable).then((response) => {
        if (response.data.success) {
          setBook(response.data.Book);
          setCommentLists(response.data.comments);
@@ -40,8 +41,8 @@ function DetailsComments(props) {
   console.log(Info);
 
   const updateComment = (newComment) => {
-    setCommentLists(CommentLists.push(newComment));
-  };
+    setCommentLists(CommentLists.concat(newComment))
+  }
 
   return (
     <div className='parent'>
@@ -68,15 +69,20 @@ function DetailsComments(props) {
         <h1>
           <StarRating></StarRating>
         </h1>
+        <Header as='h3' dividing> 
+        Comments
+        </Header>
 
+      <Comment.Group>
         <Comments
           CommentLists={CommentLists}
-          postId={Book._id}
+          postId={bookId}
           refreshFunction={updateComment}
         />
+        </Comment.Group>
       </div>
     </div>
   );
 }
 
-export default DetailsComments;
+export default DetailsComments
