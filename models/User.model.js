@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 
+const Schema = mongoose.Schema;
+
 const UserSchema = new mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId,
   loginID: {
     type: String,
     required: true
@@ -31,5 +34,6 @@ const UserSchema = new mongoose.Schema({
     required: true //probably will not be required at first registration, but required for purchases.
   }
 });
+const Users  = mongoose.model("Users", UserSchema);
 
-module.exports = User = mongoose.model("user", UserSchema);
+module.exports = Users;

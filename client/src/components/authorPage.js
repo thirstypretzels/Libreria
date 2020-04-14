@@ -7,7 +7,7 @@ class Comments extends Component {
     return (
       <div class='image'>
         <div className='details'>
-          <h1 className='title'>Enerst Hemingay</h1>
+          <h1 className='title'>Ernest Hemingway</h1>
           <h1>StarRating</h1>
         </div>
       </div>
