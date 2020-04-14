@@ -35,7 +35,7 @@ const Book1 = props => (
     <td>${props.book.price}</td>
     <td>{props.book.rating} Stars</td>
     <td>
-    <button onClick={() => props.deleteBook(props.book._id)}>Remove from Cart</button>
+    <button onClick={() => props.deleteSavedBook(props.book._id)}>Remove from Saved List</button>
     </td>
     <td>
     <button onClick={() => props.saveToCart(props.book._id)}>Save to Cart</button>
@@ -52,6 +52,7 @@ export default class CartList extends Component {
   constructor(props) {
     super(props);
     this.deleteBook = this.deleteBook.bind(this);
+    this.deleteSavedBook = this.deleteSavedBook.bind(this);
     this.saveForLater = this.saveForLater.bind(this);
     this.saveToCart = this.saveToCart.bind(this);
     this.state = {cart:Object,subtotal: Number,books:[],save4Later:[]};
@@ -129,7 +130,7 @@ componentDidMount() {
 
   saveForLaterList() {
     return this.state.save4Later.map(currentbook => {
-      return <Book1 book={currentbook} deleteBook={this.deleteBook} saveToCart={this.saveToCart} key={currentbook._id}/>;
+      return <Book1 book={currentbook} deleteSavedBook={this.deleteSavedBook} saveToCart={this.saveToCart} key={currentbook._id}/>;
     })
   }
 
@@ -139,7 +140,14 @@ componentDidMount() {
 
           axios.post('http://localhost:5000/carts/updateDeleteSaveForLater/'+ this.state.cart._id + '/' +id)
       .then(response => { console.log(response.data)});
-    this.setState({save4Later: this.state.save4Later.filter(el => el._id !== id)})
+    this.setState({save4Later: this.state.save4Later.filter(el => el._id !== id)});
+  }
+
+  deleteSavedBook(id){
+    console.log(this.state.cart._id);
+    axios.post('http://localhost:5000/carts/updateDeleteSaveForLater/'+ this.state.cart._id + '/' +id)
+      .then(response => { console.log(response.data)});
+    this.setState({save4Later: this.state.save4Later.filter(el => el._id !== id)});
   }
 
   render() {
