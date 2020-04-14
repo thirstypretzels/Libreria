@@ -22,6 +22,15 @@ const Book = (props) => {
         >
           Add to Cart
         </button>
+
+        <button
+          onClick={() =>
+            props.addToWishList(props.book._id, "5e9255aeb8b7c05d48b070af")
+          }
+        >
+          Add to Wish List
+        </button>
+
         <button
           onClick={() => props.history.push(`/Comments?id=${props.book._id}`)}
         >
@@ -38,6 +47,7 @@ export default class BooksList extends Component {
     super(props);
 
     this.addToCart = this.addToCart.bind(this);
+    this.addToWishList = this.addToWishList.bind(this);
 
     this.BrowseGenreHorror = this.BrowseGenreHorror.bind(this);
     this.BrowseGenreClassic = this.BrowseGenreClassic.bind(this);
@@ -72,13 +82,17 @@ export default class BooksList extends Component {
       .then((res) => console.log(res.data));
   }
 
-  // books: this.state.books.filter(el => el.genre.includes(genre) )
-  // Not implemented yet
+  addToWishList(id, wishId) {
+    axios
+      .post("http://localhost:5000/wishList/update/" + wishId + "/" + id)
+      .then((res) => console.log(res.data));
+  }
+
   BrowseGenreHorror() {
     axios
     .get("http://localhost:5000/books/")
     .then((response) => {
-      this.setState({ books: response.data.filter(el => el.genre.includes("Horror")) });
+      this.setState({ books: response.data.filter((el) => el.genre.includes("Horror")) });
     })
     .catch((error) => {
       console.log(error);
@@ -89,7 +103,7 @@ export default class BooksList extends Component {
     axios
     .get("http://localhost:5000/books/")
     .then((response) => {
-      this.setState({ books: response.data.filter(el => el.genre.includes("Science Fiction")) });
+      this.setState({ books: response.data.filter((el) => el.genre.includes("Science Fiction")) });
     })
     .catch((error) => {
       console.log(error);
@@ -100,7 +114,7 @@ export default class BooksList extends Component {
     axios
     .get("http://localhost:5000/books/")
     .then((response) => {
-      this.setState({ books: response.data.filter(el => el.genre.includes("Classic")) });
+      this.setState({ books: response.data.filter((el)=> el.genre.includes("Classic")) });
     })
     .catch((error) => {
       console.log(error);
@@ -111,7 +125,7 @@ export default class BooksList extends Component {
     axios
     .get("http://localhost:5000/books/")
     .then((response) => {
-      this.setState({ books: response.data.filter(el => el.topseller = true) });
+      this.setState({ books: response.data.filter((el) => el.topseller == true) });
     })
     .catch((error) => {
       console.log(error);
@@ -167,6 +181,7 @@ export default class BooksList extends Component {
           history={this.props.history}
           book={currentbook}
           addToCart={this.addToCart}
+          addToWishList={this.addToWishList}
         />
       );
     });
