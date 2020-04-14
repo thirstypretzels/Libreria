@@ -32,7 +32,7 @@ const Book = (props) => {
         </button>
 
         <button
-          onClick={() => props.history.push(`/Comments?id=${props.book._id}`)}
+          onClick={() => props.history.push(`/Comments/${props.book._id}`)}
         >
           Details
         </button>
