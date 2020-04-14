@@ -61,14 +61,14 @@ export default class BooksList extends Component {
     this.ToggleSortbyRating = this.ToggleSortbyRating.bind(this);
     this.ToggleSortbyDate = this.ToggleSortbyDate.bind(this);
 
-    this.state = { books: []};
+    this.state = { books: [], isOldestFirst: true};
   }
 
   componentDidMount() {
     axios
       .get("http://localhost:5000/books/")
       .then((response) => {
-        this.setState({ books: response.data});
+        this.setState({ books: response.data, isOldestFirst: true});
       })
       .catch((error) => {
         console.log(error);
@@ -135,31 +135,56 @@ export default class BooksList extends Component {
   ToggleSortbyTitle(event){
     const {books} = this.state
     let newbooks = books
-    this.setState({books: newbooks.sort((a,b) => a.title > b.title)});
+    if (this.state.isOldestFirst){
+      newbooks = books.sort((a,b) => a.title > b.title)
+    } else {
+      newbooks = books.sort((a,b) => a.title < b.title);
+    }
+    this.setState({books: newbooks, isOldestFirst: !this.state.isOldestFirst});
   }
 
   ToggleSortbyAuthor(event){
     const {books} = this.state
     let newbooks = books
-    this.setState({books: newbooks.sort((a,b) => a.author > b.author)});
+    if (this.state.isOldestFirst){
+      newbooks = books.sort((a,b) => a.author > b.author)
+    } else {
+      newbooks = books.sort((a,b) => a.author < b.author);
+    }
+    this.setState({books: newbooks, isOldestFirst: !this.state.isOldestFirst});
   }
 
   ToggleSortbyPrice(event){
     const {books} = this.state
     let newbooks = books
-    this.setState({books: newbooks.sort((a,b) => a.price > b.price)});
+    if (this.state.isOldestFirst){
+      newbooks = books.sort((a,b) => a.price > b.price)
+    } else {
+      newbooks = books.sort((a,b) => a.price < b.price);
+    }
+    this.setState({books: newbooks, isOldestFirst: !this.state.isOldestFirst});
   }
 
   ToggleSortbyRating(event){
     const {books} = this.state
     let newbooks = books
-    this.setState({books: newbooks.sort((a,b) => a.rating < b.rating)});
+    if (this.state.isOldestFirst){
+      newbooks = books.sort((a,b) => a.rating < b.rating)
+    } else {
+      newbooks = books.sort((a,b) => a.rating > b.rating);
+    }
+    this.setState({books: newbooks, isOldestFirst: !this.state.isOldestFirst});
   }
 
   ToggleSortbyDate(event){
     const {books} = this.state
     let newbooks = books
-    this.setState({books: newbooks.sort((a,b) => a.date > b.date)});
+    if (this.state.isOldestFirst){
+      newbooks = books.sort((a,b) => a.date > b.date)
+    } else {
+      newbooks = books.sort((a,b) => a.date < b.date);
+    }
+    this.setState({books: newbooks, isOldestFirst: !this.state.isOldestFirst});
   }
 
   ToggleSortbySubmission(event){
