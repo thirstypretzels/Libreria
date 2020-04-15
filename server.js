@@ -1,21 +1,47 @@
 const express = require("express");
-const connectDB = require("./config/db");
+const cors = require("cors");
+const mongoose = require("mongoose");
 
-const app = express;
+require("dotenv").config();
 
-//Connect Database
-connectDB();
+const app = express();
+const port = process.env.PORT || 5000;
 
-// Init Middleware
+//mongoose.connect('mongodb+srv://mllanes19:mllanes19@cluster0-tehc9.mongodb.net/test?retryWrites=true&w=majority');
+
+app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => res.send("API Running"));
+const uri = process.env.ATLAS_URI;
+mongoose.connect(
+  "mongodb+srv://mllanes19:mllanes19@cluster0-tehc9.mongodb.net/test?retryWrites=true&w=majority",
+  { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }
+);
+const connection = mongoose.connection;
+connection.once("open", () => {
+  console.log("MongoDB database connection established successfully");
+});
 
-// Define routes
-app.use("/api/books", require("./routes/api/books"));
-app.use("/api/users", require("./routes/api/users"));
-app.use("/api/comment", require("./routes/api/comment"));
+const bookRoutes = require("./routes/api/books");
+const commentRoutes = require("./routes/api/comment");
+const cartRoutes = require("./routes/api/carts");
+const userRoutes = require("./routes/api/users");
+const orderRoutes = require("./routes/api/orders");
+const wishRoutes = require("./routes/api/wishList");
 
-const PORT = process.env.PORT || 5000;
+app.use("/books", bookRoutes);
+app.use("/comment", commentRoutes);
+app.use("/users", userRoutes);
+app.use("/carts", cartRoutes);
+app.use("/orders", orderRoutes);
+app.use("/wishList", wishRoutes);
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+app.use((req, res, next) => {
+  res.status(404).json({
+    message: "Not Found",
+  });
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port: ${port}`);
+});

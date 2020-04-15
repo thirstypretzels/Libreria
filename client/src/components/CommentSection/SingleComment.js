@@ -6,12 +6,12 @@ function SingleComment(props) {
         <div>
             <Comment>
                 <Comment.Avatar 
-                src= {props.Comment.writer.image}
-                alt= "image" />
+                src='https://www.asiatripdeals.com/wp-content/uploads/2019/03/Anonymous-Avatar.png'
+                alt = "image"
+                height="42"
+                width="42" />
                 <Comment.Content>
-                  <Comment.Author>
-                   {props.comment.writer.nickName}  
-                   </Comment.Author>
+                  <Comment.Author>  ebookreader123 </Comment.Author>
                   <Comment.Text>  {props.comment.content}  </Comment.Text>
                  </Comment.Content>
               </Comment>
