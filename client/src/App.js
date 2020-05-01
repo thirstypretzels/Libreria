@@ -2,12 +2,24 @@ import React from 'react';
 import './App.css';
 import { Layout, Header, Drawer, Navigation, Content } from 'react-mdl';
 import Main from './components/main';
-import { Link } from 'react-router-dom';
+import {Route,  Link } from 'react-router-dom';
+import Callback from './callback';
+import Home from './home';
 
 
 function App() {
   return (
-    <div className="demo-big-content">
+    <div className="App" >
+    <Route exact path='/' component={Home} exact />
+    <Route exact path='/callback' component={Callback} exact />
+</div>
+
+
+  );
+}
+
+export default App;
+/* <div className="demo-big-content">
     <Layout>
         <Header className="header-color" title="Bookstore" scroll>
             <Navigation>
@@ -31,11 +43,4 @@ function App() {
             <div className="page-content" />
             <Main/>
         </Content>
-    </Layout>
-</div>
-
-
-  );
-}
-
-export default App;
+    </Layout>*/ 
