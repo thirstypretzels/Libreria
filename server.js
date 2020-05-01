@@ -7,7 +7,6 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-//mongoose.connect('mongodb+srv://mllanes19:mllanes19@cluster0-tehc9.mongodb.net/test?retryWrites=true&w=majority');
 
 app.use(cors());
 app.use(express.json());
